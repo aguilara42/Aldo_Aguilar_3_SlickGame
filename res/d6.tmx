@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="100" tilewidth="64" tileheight="64" nextobjectid="1">
+ <properties>
+  <property name="blocked" value="true"/>
+ </properties>
+ <tileset firstgid="1" name="tile_1" tilewidth="64" tileheight="64" tilecount="16">
+  <image source="tile_1.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="17" name="tile_2" tilewidth="64" tileheight="64" tilecount="16">
+  <image source="tile_2.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="33" name="bricksx64" tilewidth="64" tileheight="64" tilecount="1">
+  <image source="bricksx64.png" width="64" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="34" name="Test" tilewidth="64" tileheight="64" tilecount="20">
+  <image source="town_rpg_pack/graphics/tiles-map.png" width="352" height="288"/>
+ </tileset>
+ <tileset firstgid="54" name="Rock" tilewidth="64" tileheight="64" tilecount="64">
+  <image source="Rock.png" width="512" height="512"/>
+ </tileset>
+ <layer name="bottom" width="50" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3Ux0qEQRAA4f/FxIwZ04oZM2bM728dHFiamdtC70g11KGbuczlGwZnGmeW5mieFmiRlip7613WPc4KrdIardMGbVb21ruse5xt2qFd2qP9v8b3UeNd5j3OIR3RMZ3QKZ1V9ta7rHucC7qkK7qmG7qt7K13Wfc49/RAj/REz/RS2Vvvsu5x9Gr6vRpVdr3SK73SK73Sq/HRK72axD2OXumVXulVtkt6pVd6pVdl9Eqv9Eqvsl3SK73SK70qo1d6pVd6le2SXumVXulVGb3Sq0nc4+iVXumVXmW7pFd6pVd6VUav9Eqv9CrbJb3SK73SqzJ6pVd6pVfZLumVXumVXpXRq9z7TPhHr14th3/06tVW+EevXh2Ef/Tq1Xn4R69e3YV/9OrVa/jHG73TB33SF31X9ta7rPvP8L/mF1V5Y2wgTgAA
+  </data>
+ </layer>
+ <layer name="walls" width="50" height="100">
+  <properties>
+   <property name="blocked" value="true"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+1cQY7DIBDjC7ttDz300Dft//+yQSoSQjPAEAj2qJZGTQlJ8GIPkGT7DCH8HPH7+ZQi7rsdca+Ux89nZ8y63j2r8zriTRzx7/L4cInfS0hlu6G1M3FBbLMEjUfU1FPZ/7e0RfMQ2578o2kPDVo7H4FLVxKSPzSfsyD5w4OuIgcPuqqNHywo/cGuKw/94SXv5v5Aj1DZx+Dzt7Kdl3nhIfncwqnnuN5za/W+PPqBwkPyByMPaX7FyqNcD47k9dZxvefW6knlJY9XUc4GzedsqOUrBl3l4SXvzs5Xu/rjivFjNa7S1Wqs7I+rdSXdv5rFo7V99lx5WX7/qudaZ6+9Ml954LHSH73tOHt88seK+e4Of0jz3V6szFet7bxMmu/uGj8Q/TECNn+c0VJNV6v80dOOWTxiX6zwx9U8do+DM3nk/mjlxVq+3K0r7fm5FTPOMXrdmfdLdvNIurLoBy08Pa+d5Y9d0PIuGzzpylN/eOHx1RUGPPFgeH7eQmw72/uiEmLbpfuJbCj9gRbBUBfVH621U1kX9X1RKw9Uf1h5oI4fVh6e/IE4foz4A3E9OOIPxPdLRvzhQVfp/67YeXjSlYe8i7quHeGB6o98ztuqKz3HYQPy/MoCZH9YgOwPCzzpCnVeYgHyutYC5HWtBZ7ylTa/soynu1Hzh2V+sxs1f7Dx0PzBxqPmD2kbEZ78oc1L2Hh40ZWX/vDCw5OuPIwf2nqQkYd0v4SNh7YeZONRe+4clHLESDyk3zoL2TbDb6v9A84SN+ogTgAA
+  </data>
+ </layer>
+</map>
