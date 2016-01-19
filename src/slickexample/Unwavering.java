@@ -50,12 +50,13 @@ import org.w3c.dom.css.Rect;
 
 public class Unwavering extends BasicGameState {
 
-    public Item healthpotion, healthpotion1;
-    public Item1 speedpotion, speedpotion1;
     public Itemwin antidote;
     public Ninja Morse, Giavanna, Weber;
     public Box deathBox;
     public Enemy Aldo;
+    public Enemy Aldo1;
+    public Enemy Aldo2;
+    public Enemy Aldo3;
 
     public ArrayList<Ninja> ninjas = new ArrayList();
 
@@ -76,8 +77,6 @@ public class Unwavering extends BasicGameState {
     private static AppGameContainer app;
 
     private static Camera camera;
-
-    public static int counter = 0;
 
     public static int score = 0;
 
@@ -315,20 +314,20 @@ public class Unwavering extends BasicGameState {
         //ninjas.add(Morse);
         //deathBox = new Box(128, 388);
         
-        for(int f = 0; f < 11; f ++){
             deathBox = new Box(128, 388);
             boxs.add(deathBox);
-        }
         
         
-
-        speedpotion = new Item1(100, 150);
-        speedpotion1 = new Item1(450, 100);
-        stuff1.add(speedpotion);
-        stuff1.add(speedpotion1);
+        
 
         Aldo = new Enemy(100, 100);
+        Aldo1 = new Enemy(100, 3000);
+        Aldo2 = new Enemy(200, 3500);
+        Aldo3 = new Enemy(400, 4000);
         enemies.add(Aldo);
+        enemies.add(Aldo1);
+        enemies.add(Aldo2);
+        enemies.add(Aldo3);
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
@@ -346,17 +345,16 @@ public class Unwavering extends BasicGameState {
         sprite.draw((int) Player.x, (int) Player.y);
 
         g.drawString("x: " + (int) Player.x + "  y: " + (int) Player.y, Player.x, Player.y - 10);
-        g.drawString("Health: " + Player.health / 1000, camera.cameraX + 10,
+        g.drawString("Health: " + Player.health, camera.cameraX + 10,
                 camera.cameraY + 10);
 
         g.drawString("Speed: " + (int) (Player.speed * 10), camera.cameraX + 10,
                 camera.cameraY + 25);
 
         g.drawString("Score: " + (int) (score), camera.cameraX + 10,
-                camera.cameraY + 50);
+                camera.cameraY + 45);
 
         //g.draw(player.rect);
-        g.drawString("time passed: " + counter / 1000, camera.cameraX + 600, camera.cameraY);
         // moveenemies();
 
         for (Item i : stuff) {
@@ -414,7 +412,7 @@ public class Unwavering extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
 
-        counter += delta;
+
 
         Input input = gc.getInput();
 
@@ -498,31 +496,16 @@ public class Unwavering extends BasicGameState {
         Player.rect.setLocation(Player.getplayershitboxX(),
                 Player.getplayershitboxY());
 
-        for (Item i : stuff) {
 
-            if (Player.rect.intersects(i.hitbox)) {
-                //System.out.println("yay");
-                if (i.isvisible) {
-
-                    Player.health += 10000;
-                    i.isvisible = false;
-                }
-
+        if (Player.health <= 0){
+                sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             }
+        
+        if (score == 10){
+            sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
         }
-
-        for (Item1 h : stuff1) {
-
-            if (Player.rect.intersects(h.hitbox)) {
-                //System.out.println("yay");
-                if (h.isvisible) {
-
-                    Player.speed += .1f;
-                    h.isvisible = false;
-                }
-
-            }
-        }
+        
+        
 
         for (Itemwin w : stuffwin) {
 
@@ -556,7 +539,7 @@ public class Unwavering extends BasicGameState {
                 //System.out.println("yay");
                 if (e.isvisible) {
 
-                    Player.health = - 10;
+                    Player.health -= 30;
                     e.isvisible = false;
                 }
 
@@ -568,20 +551,15 @@ public class Unwavering extends BasicGameState {
             if (Player.rect.intersects(d.hitbox)) {
                 //System.out.println("yay");
                 if (d.isvisible) {
-
-                    Player.health += 10000;
-                    score = +1;
+                    Player.speed += .01f;
+                    Player.health += 5;
+                    score+= 1;
                     d.isvisible = false;
                 }
 
             }
         }
-
-        Player.health -= counter / 1000;
-        if (Player.health <= 0) {
-            makevisible();
-            sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-        }
+        
 
     }
 

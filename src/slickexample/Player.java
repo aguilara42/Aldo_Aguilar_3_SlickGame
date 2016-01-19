@@ -19,7 +19,7 @@ public class Player {
 
 	public static float y = 228f;
 
-	public static int health = 1000;
+	public static int health = 100;
 	
 	public static float speed = .4f;
 

@@ -92,7 +92,7 @@ public class win extends BasicGameState {
         g.setColor(Color.white);
 
 
-        g.drawString("You found the antidote in time!", 380, 200);
+        g.drawString("You got 10 boxes", 380, 200);
         g.drawString("press 1 to play again", 400, 320);
 
 
@@ -146,11 +146,11 @@ public class win extends BasicGameState {
 
             case Input.KEY_1:
 
-                Player.health  = 100000;
+                Player.health  = 100;
                 Player.speed = .4f;
-                Unwavering.counter = 0;
                 Player.x = 96f;
                 Player.y = 228f;
+                Unwavering.score = 0;
                 
                 
                 //item.isvisible = true;
