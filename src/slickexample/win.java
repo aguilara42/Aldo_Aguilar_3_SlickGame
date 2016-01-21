@@ -92,7 +92,7 @@ public class win extends BasicGameState {
         g.setColor(Color.white);
 
 
-        g.drawString("You got 10 boxes", 380, 200);
+        g.drawString("You collected the one true lettuce, you win", 380, 200);
         g.drawString("press 1 to play again", 400, 320);
 
 

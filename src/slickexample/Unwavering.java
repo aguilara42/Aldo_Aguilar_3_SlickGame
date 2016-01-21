@@ -57,6 +57,9 @@ public class Unwavering extends BasicGameState {
     public Enemy Aldo1;
     public Enemy Aldo2;
     public Enemy Aldo3;
+    public GodLettuce god;
+
+    public ArrayList<GodLettuce> lettuce = new ArrayList();
 
     public ArrayList<Ninja> ninjas = new ArrayList();
 
@@ -77,6 +80,8 @@ public class Unwavering extends BasicGameState {
     private static AppGameContainer app;
 
     private static Camera camera;
+
+    public static boolean godLettuce = false;
 
     public static int score = 0;
 
@@ -284,9 +289,9 @@ public class Unwavering extends BasicGameState {
                 int xBlock = (int) xAxis;
                 int yBlock = (int) yAxis;
                 if (!Blocked.blocked[xBlock][yBlock]) {
-                    if (yBlock % 7 == 0 && xBlock % 15 == 0) {
-                        Box i = new Box(xAxis * SIZE, yAxis * SIZE);
-                        boxs.add(i);
+                    if (yBlock % 17 == 0 && xBlock % 15 == 0) {
+                        Enemy i = new Enemy(xAxis * SIZE, yAxis * SIZE);
+                        enemies.add(i);
                         //stuff1.add(h);
                         hostiles[xAxis][yAxis] = true;
                     }
@@ -299,26 +304,21 @@ public class Unwavering extends BasicGameState {
                 int xBlock = (int) xAxis;
                 int yBlock = (int) yAxis;
                 if (!Blocked.blocked[xBlock][yBlock]) {
-                    if (xBlock % 9 == 0 && yBlock % 25 == 0) {
-                        Item1 h = new Item1(xAxis * SIZE, yAxis * SIZE);
-                        //	stuff.add(i);
-                        stuff1.add(h);
+                    if (yBlock % 7 == 0 && xBlock % 15 == 0) {
+                        Box i = new Box(xAxis * SIZE, yAxis * SIZE);
+                        boxs.add(i);
+                        //stuff1.add(h);
                         hostiles[xAxis][yAxis] = true;
                     }
                 }
             }
         }
 
-
         //Morse = new Ninja(42, 42);
         //ninjas.add(Morse);
         //deathBox = new Box(128, 388);
-        
-            deathBox = new Box(128, 388);
-            boxs.add(deathBox);
-        
-        
-        
+        deathBox = new Box(128, 388);
+        boxs.add(deathBox);
 
         Aldo = new Enemy(100, 100);
         Aldo1 = new Enemy(100, 3000);
@@ -328,6 +328,10 @@ public class Unwavering extends BasicGameState {
         enemies.add(Aldo1);
         enemies.add(Aldo2);
         enemies.add(Aldo3);
+
+        god = new GodLettuce(300, 100);
+        lettuce.add(god);
+
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
@@ -344,19 +348,18 @@ public class Unwavering extends BasicGameState {
         // System.out.println("Current X: " +player.x + " \n Current Y: "+ y);
         sprite.draw((int) Player.x, (int) Player.y);
 
-        g.drawString("x: " + (int) Player.x + "  y: " + (int) Player.y, Player.x, Player.y - 10);
+        // g.drawString("x: " + (int) Player.x + "  y: " + (int) Player.y, Player.x, Player.y - 10);
         g.drawString("Health: " + Player.health, camera.cameraX + 10,
                 camera.cameraY + 10);
 
         g.drawString("Speed: " + (int) (Player.speed * 10), camera.cameraX + 10,
-                camera.cameraY + 25);
+                camera.cameraY + 28);
 
-        g.drawString("Score: " + (int) (score), camera.cameraX + 10,
+        g.drawString("Lettuce: " + (int) (score), camera.cameraX + 10,
                 camera.cameraY + 45);
 
         //g.draw(player.rect);
         // moveenemies();
-
         for (Item i : stuff) {
             if (i.isvisible) {
                 i.currentImage.draw(i.x, i.y);
@@ -393,11 +396,16 @@ public class Unwavering extends BasicGameState {
         for (Box b : boxs) {
             if (b.isvisible) {
                 b.currentImage.draw(b.x, b.y);
-                g.draw(b.hitbox);
 
             }
         }
 
+        for (GodLettuce l : lettuce) {
+            if (l.isvisible) {
+                l.currentImage.draw(l.x, l.y);
+
+            }
+        }
         for (Enemy e : enemies) {
             if (e.isvisible) {
                 e.currentanime.draw(e.Bx, e.By);
@@ -411,8 +419,6 @@ public class Unwavering extends BasicGameState {
 
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
-
-
 
         Input input = gc.getInput();
 
@@ -496,16 +502,13 @@ public class Unwavering extends BasicGameState {
         Player.rect.setLocation(Player.getplayershitboxX(),
                 Player.getplayershitboxY());
 
+        if (Player.health <= 0) {
+            sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+        }
 
-        if (Player.health <= 0){
-                sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-            }
-        
-        if (score == 10){
+        if (score == 10 && godLettuce) {
             sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
         }
-        
-        
 
         for (Itemwin w : stuffwin) {
 
@@ -553,14 +556,26 @@ public class Unwavering extends BasicGameState {
                 if (d.isvisible) {
                     Player.speed += .01f;
                     Player.health += 5;
-                    score+= 1;
+                    score += 1;
                     d.isvisible = false;
                 }
 
             }
         }
-        
 
+        for (GodLettuce l : lettuce) {
+
+            if (Player.rect.intersects(l.hitbox)) {
+                //System.out.println("yay");
+                if (l.isvisible) {
+                    Player.speed += .08f;
+                    Player.health += 10;
+                    godLettuce = true;
+                    l.isvisible = false;
+                }
+
+            }
+        }
     }
 
     public int getID() {
