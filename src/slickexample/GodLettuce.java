@@ -23,7 +23,7 @@ public class GodLettuce {
 	Image currentImage;
 	Shape hitbox;
 	Image storeBox = new Image(
-			"res/Box.png");
+			"res/god.png");
 
 	GodLettuce(int a, int b) throws SlickException {
 		this.x = a;
