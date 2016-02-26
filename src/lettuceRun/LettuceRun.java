@@ -1,56 +1,20 @@
 package lettuceRun;
 
-import org.newdawn.slick.state.*;
-
-import java.io.IOException;
-
 import java.util.ArrayList;
-
-import java.util.Iterator;
-
-import java.util.logging.Level;
-
-import java.util.logging.Logger;
-
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
-
 import org.newdawn.slick.AppGameContainer;
-
-import org.newdawn.slick.BasicGame;
-
-import org.newdawn.slick.Font;
-
 import org.newdawn.slick.GameContainer;
-
 import org.newdawn.slick.Graphics;
-
-import org.newdawn.slick.Image;
-
 import org.newdawn.slick.Input;
-
 import org.newdawn.slick.SlickException;
-
-import org.newdawn.slick.SpriteSheet;
-
-import org.newdawn.slick.TrueTypeFont;
-
-import org.newdawn.slick.geom.Rectangle;
-
-import org.newdawn.slick.geom.Shape;
-
 import org.newdawn.slick.state.BasicGameState;
-
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
-
 import org.newdawn.slick.tiled.TiledMap;
-import org.w3c.dom.css.Rect;
 
 public class LettuceRun extends BasicGameState {
 
-    public Itemwin antidote;
     public Ninja Morse, Giavanna, Weber;
     public Box deathBox;
     public Enemy Aldo;
@@ -58,52 +22,26 @@ public class LettuceRun extends BasicGameState {
     public Enemy Aldo2;
     public Enemy Aldo3;
     public GodLettuce god;
+    static public Player player;
+    public Orb orb1;
 
     public ArrayList<GodLettuce> lettuce = new ArrayList();
-
     public ArrayList<Ninja> ninjas = new ArrayList();
-
-    public ArrayList<Item> stuff = new ArrayList();
-
-    public ArrayList<Item1> stuff1 = new ArrayList();
-
-    public ArrayList<Itemwin> stuffwin = new ArrayList();
-
     public ArrayList<Box> boxs = new ArrayList();
-
     public ArrayList<Enemy> enemies = new ArrayList();
-
     private boolean[][] hostiles;
-
+    private boolean iPressed;
+    private boolean reset = true;
     private static TiledMap grassMap;
-
     private static AppGameContainer app;
-
     private static Camera camera;
-
     public static boolean godLettuce = false;
-
     public static int score = 0;
-
-    // Player stuff
-    private Animation sprite, up, down, left, right, wait;
-
-    /**
-     *
-     * The collision map indicating which tiles block movement - generated based
-     *
-     * on tile properties
-     */
-    // changed to match size of sprites & map
     private static final int SIZE = 64;
-
-    // screen width and height won't change
     private static final int SCREEN_WIDTH = 1000;
-
     private static final int SCREEN_HEIGHT = 750;
 
     public LettuceRun(int xSize, int ySize) {
-
     }
 
     public void init(GameContainer gc, StateBasedGame sbg)
@@ -113,150 +51,24 @@ public class LettuceRun extends BasicGameState {
 
         gc.setShowFPS(false);
 
-        // *******************
-        // Scenerey Stuff
-        // ****************
         grassMap = new TiledMap("res/d6.tmx");
-
-        // Ongoing checks are useful
 
         camera = new Camera(gc, grassMap);
 
-        // *********************************************************************************
-        // Player stuff --- these things should probably be chunked into methods
-        // and classes
-        // *********************************************************************************
-        SpriteSheet runningSS = new SpriteSheet(
-                "res/ogrespritesheet.png", 64, 64, 0);
+        player = new Player();
 
-        // System.out.println("Horizontal count: "
-        // +runningSS.getHorizontalCount());
-        // System.out.println("Vertical count: " +runningSS.getVerticalCount());
-        up = new Animation();
-
-        up.setAutoUpdate(true);
-
-        up.addFrame(runningSS.getSprite(0, 8), 330);
-
-        up.addFrame(runningSS.getSprite(1, 8), 330);
-
-        up.addFrame(runningSS.getSprite(2, 8), 330);
-
-        up.addFrame(runningSS.getSprite(3, 8), 330);
-
-        up.addFrame(runningSS.getSprite(4, 8), 330);
-
-        up.addFrame(runningSS.getSprite(5, 8), 330);
-
-        up.addFrame(runningSS.getSprite(6, 8), 330);
-
-        up.addFrame(runningSS.getSprite(7, 8), 330);
-
-        up.addFrame(runningSS.getSprite(8, 8), 330);
-
-        down = new Animation();
-
-        down.setAutoUpdate(false);
-
-        down.addFrame(runningSS.getSprite(0, 10), 330);
-
-        down.addFrame(runningSS.getSprite(1, 10), 330);
-
-        down.addFrame(runningSS.getSprite(2, 10), 330);
-
-        down.addFrame(runningSS.getSprite(3, 10), 330);
-
-        down.addFrame(runningSS.getSprite(4, 10), 330);
-
-        down.addFrame(runningSS.getSprite(5, 10), 330);
-
-        down.addFrame(runningSS.getSprite(6, 10), 330);
-
-        down.addFrame(runningSS.getSprite(7, 10), 330);
-
-        down.addFrame(runningSS.getSprite(8, 10), 330);
-
-        left = new Animation();
-
-        left.setAutoUpdate(false);
-
-        left.addFrame(runningSS.getSprite(0, 9), 330);
-
-        left.addFrame(runningSS.getSprite(1, 9), 330);
-
-        left.addFrame(runningSS.getSprite(2, 9), 330);
-
-        left.addFrame(runningSS.getSprite(3, 9), 330);
-
-        left.addFrame(runningSS.getSprite(4, 9), 330);
-
-        left.addFrame(runningSS.getSprite(5, 9), 330);
-
-        left.addFrame(runningSS.getSprite(6, 9), 330);
-
-        left.addFrame(runningSS.getSprite(7, 9), 330);
-
-        left.addFrame(runningSS.getSprite(8, 9), 330);
-
-        right = new Animation();
-
-        right.setAutoUpdate(false);
-
-        right.addFrame(runningSS.getSprite(0, 11), 330);
-
-        right.addFrame(runningSS.getSprite(1, 11), 330);
-
-        right.addFrame(runningSS.getSprite(2, 11), 330);
-
-        right.addFrame(runningSS.getSprite(3, 11), 330);
-
-        right.addFrame(runningSS.getSprite(4, 11), 330);
-
-        right.addFrame(runningSS.getSprite(5, 11), 330);
-
-        right.addFrame(runningSS.getSprite(6, 11), 330);
-
-        right.addFrame(runningSS.getSprite(7, 11), 330);
-
-        right.addFrame(runningSS.getSprite(8, 11), 330);
-
-        wait = new Animation();
-
-        wait.setAutoUpdate(true);
-
-        wait.addFrame(runningSS.getSprite(0, 14), 733);
-
-        wait.addFrame(runningSS.getSprite(1, 14), 733);
-
-        wait.addFrame(runningSS.getSprite(2, 14), 733);
-
-        wait.addFrame(runningSS.getSprite(3, 14), 733);
-
-        // wait.addFrame(runningSS.getSprite(2, 14), 733);
-        // wait.addFrame(runningSS.getSprite(5, 14), 333);
-        sprite = wait;
-
-        // *****************************************************************
-        // Obstacles etc.
-        // build a collision map based on tile properties in the TileD map
         Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
-        
+
         for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 
             for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
 
-                // int tileID = grassMap.getTileId(xAxis, yAxis, 0);
-                // Why was this changed?
-                // It's a Different Layer.
-                // You should read the TMX file. It's xml, i.e.,human-readable
-                // for a reason
                 int tileID = grassMap.getTileId(xAxis, yAxis, 1);
 
                 String value = grassMap.getTileProperty(tileID,
                         "blocked", "false");
 
                 if ("true".equals(value)) {
-
 
                     Blocked.blocked[xAxis][yAxis] = true;
 
@@ -266,112 +78,78 @@ public class LettuceRun extends BasicGameState {
 
         }
 
-
-
-        // A remarkably similar process for finding hostiles
         hostiles = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 
-        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-                int xBlock = (int) xAxis;
-                int yBlock = (int) yAxis;
-                if (!Blocked.blocked[xBlock][yBlock]) {
-                    if (yBlock % 17 == 0 && xBlock % 15 == 0) {
-                        Enemy i = new Enemy(xAxis * SIZE, yAxis * SIZE);
-                        enemies.add(i);
-                        //stuff1.add(h);
-                        hostiles[xAxis][yAxis] = true;
+        if (reset) {
+            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+                    int xBlock = (int) xAxis;
+                    int yBlock = (int) yAxis;
+                    if (!Blocked.blocked[xBlock][yBlock]) {
+                        if (yBlock % 17 == 0 && xBlock % 15 == 0) {
+                            Enemy i = new Enemy(xAxis * SIZE, yAxis * SIZE);
+                            enemies.add(i);
+
+                            hostiles[xAxis][yAxis] = true;
+                        }
                     }
                 }
             }
-        }
 
-        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-                int xBlock = (int) xAxis;
-                int yBlock = (int) yAxis;
-                if (!Blocked.blocked[xBlock][yBlock]) {
-                    if (yBlock % 7 == 0 && xBlock % 15 == 0) {
-                        Box i = new Box(xAxis * SIZE, yAxis * SIZE);
-                        boxs.add(i);
-                        //stuff1.add(h);
-                        hostiles[xAxis][yAxis] = true;
+            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+                    int xBlock = (int) xAxis;
+                    int yBlock = (int) yAxis;
+                    if (!Blocked.blocked[xBlock][yBlock]) {
+                        if (yBlock % 7 == 0 && xBlock % 15 == 0) {
+                            Box i = new Box(xAxis * SIZE, yAxis * SIZE);
+                            boxs.add(i);
+                            hostiles[xAxis][yAxis] = true;
+                        }
                     }
                 }
             }
+            deathBox = new Box(128, 388);
+            Aldo = new Enemy(100, 100);
+            Aldo1 = new Enemy(100, 3000);
+            Aldo2 = new Enemy(200, 3500);
+            Aldo3 = new Enemy(400, 4000);
+            orb1 = new Orb((int) player.x, (int) player.y);
+            enemies.add(Aldo);
+            enemies.add(Aldo1);
+            enemies.add(Aldo2);
+            enemies.add(Aldo3);
+            boxs.add(deathBox);
+            god = new GodLettuce(100, 300);
+            //  god = new GodLettuce(1000, 5000);
+            lettuce.add(god);
+            reset = false;
         }
-
-        //Morse = new Ninja(42, 42);
-        //ninjas.add(Morse);
-        //deathBox = new Box(128, 388);
-        deathBox = new Box(128, 388);
-        boxs.add(deathBox);
-
-        Aldo = new Enemy(100, 100);
-        Aldo1 = new Enemy(100, 3000);
-        Aldo2 = new Enemy(200, 3500);
-        Aldo3 = new Enemy(400, 4000);
-        enemies.add(Aldo);
-        enemies.add(Aldo1);
-        enemies.add(Aldo2);
-        enemies.add(Aldo3);
-
-        god = new GodLettuce(1000, 5000);
-        lettuce.add(god);
 
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
             throws SlickException {
 
-        camera.centerOn((int) Player.x, (int) Player.y);
+        camera.centerOn((int) player.x, (int) player.y);
 
         camera.drawMap();
 
         camera.translateGraphics();
 
-        // it helps to add status reports to see what's going on
-        // but it gets old quickly
-        // System.out.println("Current X: " +player.x + " \n Current Y: "+ y);
-        sprite.draw((int) Player.x, (int) Player.y);
+        player.sprite.draw((int) player.x, (int) player.y);
 
-        // g.drawString("x: " + (int) Player.x + "  y: " + (int) Player.y, Player.x, Player.y - 10);
-        g.drawString("Health: " + Player.health, camera.cameraX + 10,
+        g.drawString("Health: " + player.health, camera.cameraX + 10,
                 camera.cameraY + 10);
 
-        g.drawString("Speed: " + (int) (Player.speed * 10), camera.cameraX + 10,
+        g.drawString("Speed: " + (int) (player.speed * 10), camera.cameraX + 10,
                 camera.cameraY + 28);
 
-        g.drawString("Lettuce: " + (int) (score), camera.cameraX + 10,
-                camera.cameraY + 45);
-
-        //g.draw(player.rect);
-        // moveenemies();
-        for (Item i : stuff) {
-            if (i.isvisible) {
-                i.currentImage.draw(i.x, i.y);
-                // draw the hitbox
-                //g.draw(i.hitbox);
-
-            }
-        }
-
-        for (Item1 h : stuff1) {
-            if (h.isvisible) {
-                h.currentImage.draw(h.x, h.y);
-                // draw the hitbox
-                //g.draw(h.hitbox);
-
-            }
-        }
-
-        for (Itemwin w : stuffwin) {
-            if (w.isvisible) {
-                w.currentImage.draw(w.x, w.y);
-                // draw the hitbox
-                //g.draw(w.hitbox);\
-            }
-
+        if (iPressed) {
+            g.drawString("--------------", camera.cameraX + 10,
+                    camera.cameraY + 45);
+            g.drawString("Lettuce: " + (int) (score), camera.cameraX + 10,
+                    camera.cameraY + 55);
         }
 
         for (Ninja a : ninjas) {
@@ -396,10 +174,10 @@ public class LettuceRun extends BasicGameState {
         for (Enemy e : enemies) {
             if (e.isvisible) {
                 e.currentanime.draw(e.Bx, e.By);
-
-                // draw the hitbox
-                //g.draw(i.hitbox);
             }
+        }
+        if (orb1.isIsVisible()) {
+            orb1.orbpic.draw(orb1.getX(), orb1.getY());
         }
 
     }
@@ -409,140 +187,170 @@ public class LettuceRun extends BasicGameState {
 
         Input input = gc.getInput();
 
-        float fdelta = delta * Player.speed;
+        float fdelta = delta * player.speed;
 
-        Player.setpdelta(fdelta);
+        player.setpdelta(fdelta);
 
         double rightlimit = (grassMap.getWidth() * SIZE) - (SIZE * 0.75);
 
-        // System.out.println("Right limit: " + rightlimit);
-        float projectedright = Player.x + fdelta + SIZE;
+        float projectedright = player.x + fdelta + SIZE;
 
         boolean cangoright = projectedright < rightlimit;
 
         for (Enemy e : enemies) {
+            if (orb1.HitBox.intersects(e.rect)) {
+                e.isvisible = false;
+            }
 
-            //  e.setdirection();
             e.move();
         }
-        // there are two types of fixes. A kludge and a hack. This is a kludge.
+
+        if (orb1.isIsVisible()) {
+            if (orb1.getTime() > 0) {
+                if (player.getDirection() == 0) {
+                    orb1.setX(orb1.getX());
+                    orb1.setY(orb1.getY() - 5);
+                } else if (player.getDirection() == 1) {
+                    orb1.setX(orb1.getX() + 5);
+                    orb1.setY(orb1.getY());
+                } else if (player.getDirection() == 2) {
+                    orb1.setX(orb1.getX());
+                    orb1.setY(orb1.getY() + 5);
+                } else if (player.getDirection() == 3) {
+                    orb1.setX(orb1.getX() - 5);
+                    orb1.setY(orb1.getY());
+                }
+                orb1.HitBox.setX(orb1.getX());
+                orb1.HitBox.setY(orb1.getY());
+                orb1.countdown();
+
+            } else {
+                orb1.setIsVisible(false);
+            }
+        }
+
         if (input.isKeyDown(Input.KEY_UP)) {
 
-            sprite = up;
+            player.setDirection(0);
+
+            player.sprite = player.up;
 
             float fdsc = (float) (fdelta - (SIZE * .15));
 
-            if (!(isBlocked(Player.x, Player.y - fdelta) || isBlocked((float) (Player.x + SIZE + 1.5), Player.y - fdelta))) {
+            if (!(isBlocked(player.x, player.y - fdelta) || isBlocked((float) (player.x + SIZE + 1.5), player.y - fdelta))) {
 
-                sprite.update(delta);
+                player.sprite.update(delta);
 
-                // The lower the delta the slower the sprite will animate.
-                Player.y -= fdelta;
+                player.y -= fdelta;
 
             }
 
         } else if (input.isKeyDown(Input.KEY_DOWN)) {
 
-            sprite = down;
+            player.setDirection(2);
 
-            if (!isBlocked(Player.x, Player.y + SIZE + fdelta)
-                    || !isBlocked(Player.x + SIZE - 1, Player.y + SIZE + fdelta)) {
+            player.sprite = player.down;
 
-                sprite.update(delta);
+            if (!isBlocked(player.x, player.y + SIZE + fdelta)
+                    || !isBlocked(player.x + SIZE - 1, player.y + SIZE + fdelta)) {
 
-                Player.y += fdelta;
+                player.sprite.update(delta);
+
+                player.y += fdelta;
 
             }
 
         } else if (input.isKeyDown(Input.KEY_LEFT)) {
 
-            sprite = left;
+            player.setDirection(3);
 
-            if (!(isBlocked(Player.x - fdelta, Player.y) || isBlocked(Player.x
-                    - fdelta, Player.y + SIZE - 1))) {
+            player.sprite = player.left;
 
-                sprite.update(delta);
+            if (!(isBlocked(player.x - fdelta, player.y) || isBlocked(player.x
+                    - fdelta, player.y + SIZE - 1))) {
 
-                Player.x -= fdelta;
+                player.sprite.update(delta);
+
+                player.x -= fdelta;
 
             }
 
         } else if (input.isKeyDown(Input.KEY_RIGHT)) {
 
-            sprite = right;
+            player.setDirection(1);
 
-            // the boolean-kludge-implementation
+            player.sprite = player.right;
+
             if (cangoright
-                    && (!(isBlocked(Player.x + SIZE + fdelta,
-                            Player.y) || isBlocked(Player.x + SIZE + fdelta, Player.y
+                    && (!(isBlocked(player.x + SIZE + fdelta,
+                            player.y) || isBlocked(player.x + SIZE + fdelta, player.y
                             + SIZE - 1)))) {
 
-                sprite.update(delta);
+                player.sprite.update(delta);
 
-                Player.x += fdelta;
+                player.x += fdelta;
 
-            } // else { System.out.println("Right limit reached: " +
-            // rightlimit);}
+            }
 
+        } else if (input.isKeyDown((Input.KEY_SPACE))) {
+            orb1.setTime(20);
+            orb1.setX((int) player.x);
+            orb1.setY((int) player.y);
+            orb1.HitBox.setX(player.x);
+            orb1.HitBox.setY(player.y);
+            orb1.setIsVisible(true);
+            if (!(isBlocked(orb1.getX(), orb1.getY() - fdelta) || isBlocked((float) (orb1.getX() + SIZE + 1.5), orb1.getY() - fdelta))) {
+
+                //orb1.setOrbpic().update(delta);
+                // player.y -= fdelta;
+            }
+            //orb1.setHitboxX((int)player.x);
+            //orb1.setHitboxY((int)player.y);
+            //orb1.setIsVisible(!orb1.isIsVisible());
+
+        } else if (input.isKeyPressed((Input.KEY_I))) {
+            iPressed = true;
+
+            /*  while (iPressed) {
+             if (input.isKeyPressed((Input.KEY_G))) {
+             iPressed = false;
+             }
+            
+             */
+        } else if (input.isKeyPressed((Input.KEY_J))) {
+            iPressed = false;
         }
 
-        Player.rect.setLocation(Player.getplayershitboxX(),
-                Player.getplayershitboxY());
+        player.rect.setLocation(player.getplayershitboxX(),
+                player.getplayershitboxY());
 
-        if (Player.health <= 0) {
+        if (player.health <= 0) {
             sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
         }
 
-        if (score == 10 && godLettuce) {
-            sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+        if (score == 1 && godLettuce == true) {
+            sbg.enterState(4, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
         }
 
-        for (Itemwin w : stuffwin) {
-
-            if (Player.rect.intersects(w.hitbox)) {
-                //System.out.println("yay");
-                if (w.isvisible) {
-                    w.isvisible = false;
-                    makevisible();
-                    sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-
-                }
-
-            }
-        }
-
-        /*for (Ninja i : ninjas) {
-
-         if (Player.rect.intersects(i.hitbox)) {
-         //System.out.println("yay");
-         if (i.isvisible) {
-
-         Player.health += 10000;
-         i.isvisible = false;
-         }
-
-         }
-         }*/
         for (Enemy e : enemies) {
 
-            if (Player.rect.intersects(e.rect)) {
-                //System.out.println("yay");
+            if (player.rect.intersects(e.rect)) {
                 if (e.isvisible) {
 
-                    Player.health -= 30;
+                    player.health -= 30;
                     e.isvisible = false;
                 }
 
             }
+
         }
 
         for (Box d : boxs) {
 
-            if (Player.rect.intersects(d.hitbox)) {
-                //System.out.println("yay");
+            if (player.rect.intersects(d.hitbox)) {
                 if (d.isvisible) {
-                    Player.speed += .01f;
-                    Player.health += 5;
+                    player.speed += .01f;
+                    player.health += 5;
                     score += 1;
                     d.isvisible = false;
                 }
@@ -552,11 +360,10 @@ public class LettuceRun extends BasicGameState {
 
         for (GodLettuce l : lettuce) {
 
-            if (Player.rect.intersects(l.hitbox)) {
-                //System.out.println("yay");
+            if (player.rect.intersects(l.hitbox)) {
                 if (l.isvisible) {
-                    Player.speed += .08f;
-                    Player.health += 10;
+                    player.speed += .08f;
+                    player.health += 10;
                     godLettuce = true;
                     l.isvisible = false;
                 }
@@ -571,18 +378,6 @@ public class LettuceRun extends BasicGameState {
 
     }
 
-    public void makevisible() {
-        for (Item1 h : stuff1) {
-
-            h.isvisible = true;
-        }
-
-        for (Item i : stuff) {
-
-            i.isvisible = true;
-        }
-    }
-
     private boolean isBlocked(float tx, float ty) {
 
         int xBlock = (int) tx / SIZE;
@@ -590,8 +385,6 @@ public class LettuceRun extends BasicGameState {
         int yBlock = (int) ty / SIZE;
 
         return Blocked.blocked[xBlock][yBlock];
-
-        // this could make a better kludge
     }
 
 }

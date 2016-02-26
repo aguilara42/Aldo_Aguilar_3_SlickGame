@@ -19,7 +19,7 @@ import org.newdawn.slick.geom.Shape;
 public class GodLettuce {
     public int x;
 	public int y;
-	public boolean isvisible = true;
+	public static boolean isvisible = true;
 	Image currentImage;
 	Shape hitbox;
 	Image storeBox = new Image(

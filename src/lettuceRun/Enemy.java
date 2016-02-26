@@ -288,7 +288,7 @@ public class Enemy {
 
     private boolean canigoup() {
 
-        fdelta = Player.getpdelta();
+        fdelta = LettuceRun.player.getpdelta();
 
         return (!isBlocked(this.Bx, this.By - fdelta)
 
@@ -299,7 +299,7 @@ public class Enemy {
 
     private boolean canigodown() {
 
-        fdelta = Player.getpdelta();
+        fdelta = LettuceRun.player.getpdelta();
 
         return ((!isBlocked(this.Bx, this.By + SIZE + 8)
 
@@ -327,7 +327,7 @@ public class Enemy {
 
     private boolean canigoleft() {
 
-        fdelta = Player.getpdelta();
+        fdelta = LettuceRun.player.getpdelta();
 
         //if (!(!isBlocked(this.Bx - SIZE, this.By) || !isBlocked(this.Bx - fdelta, this.By + SIZE - 16)) || !isBlocked(this.Bx, this.By + SIZE/2) || !isBlocked(this.Bx -16, this.By -64))
 
@@ -360,7 +360,7 @@ public class Enemy {
         if (this.canigoup()) {
 
 
-            fdelta = Player.getpdelta();
+            fdelta = LettuceRun.player.getpdelta();
 
             this.currentanime = skup;
 
@@ -381,7 +381,7 @@ public class Enemy {
 
         if (this.canigodown()) {
 
-            fdelta = Player.getpdelta();
+            fdelta = LettuceRun.player.getpdelta();
 
             this.currentanime = skdown;
 
@@ -398,7 +398,7 @@ public class Enemy {
 
         if (this.canigoleft()) {
 
-            fdelta = Player.getpdelta();
+            fdelta = LettuceRun.player.getpdelta();
 
             this.currentanime = skleft;
 
@@ -415,7 +415,7 @@ public class Enemy {
 
         if (this.canigoright()) {
 
-            fdelta = Player.getpdelta();
+            fdelta = LettuceRun.player.getpdelta();
 
             this.currentanime = skright;
 
@@ -430,25 +430,25 @@ public class Enemy {
 
     void setdirection() {
 
-        if (Player.getplayersY() < this.By) {
+        if (LettuceRun.player.getplayersY() < this.By) {
 
             this.mydirection = Direction.UP;
 
         }
 
-        if ((Player.getplayersY() > this.By)) {
+        if ((LettuceRun.player.getplayersY() > this.By)) {
 
             this.mydirection = Direction.DOWN;
 
         }
 
-        if ((Player.getplayersX() > this.Bx)) {
+        if ((LettuceRun.player.getplayersX() > this.Bx)) {
 
             this.mydirection = Direction.RIGHT;
 
         }
 
-        if ((Player.getplayersX() < this.Bx) && canigoleft()) {
+        if ((LettuceRun.player.getplayersX() < this.Bx) && canigoleft()) {
 
             this.mydirection = Direction.LEFT;
 
@@ -469,11 +469,11 @@ public class Enemy {
 
         if (true){
 
-        if (this.Bx > Player.getplayersX()) {
+        if (this.Bx > LettuceRun.player.getplayersX()) {
 
             this.moveleft();
 
-        } else if (this.Bx < Player.getplayersX()) {
+        } else if (this.Bx < LettuceRun.player.getplayersX()) {
 
             this.moveright();
 
@@ -487,11 +487,11 @@ public class Enemy {
         }
 
 
-        if (this.By > Player.getplayersY()) {
+        if (this.By > LettuceRun.player.getplayersY()) {
 
             this.moveup();
 
-        } else if (this.By < Player.getplayersY()) {
+        } else if (this.By < LettuceRun.player.getplayersY()) {
 
             this.movedown();
 

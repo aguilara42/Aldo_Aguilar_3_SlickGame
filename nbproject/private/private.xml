@@ -3,18 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Camera.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/lose.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/GodLettuce.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Player.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Box.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Item.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Ninja.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Enemy.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Unwavering.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Main.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/Menu.java</file>
-            <file>file:/home/aguilara42/NetBeansProjects/SlickExampleAldo/src/slickexample/win.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/LettuceRun.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Blocked.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Player.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Orb.java</file>
         </group>
     </open-files>
 </project-private>
