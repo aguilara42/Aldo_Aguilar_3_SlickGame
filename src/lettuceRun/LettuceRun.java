@@ -46,41 +46,41 @@ public class LettuceRun extends BasicGameState {
 
     public void init(GameContainer gc, StateBasedGame sbg)
             throws SlickException {
+        while (reset) {
 
-        gc.setTargetFrameRate(60);
+            gc.setTargetFrameRate(60);
 
-        gc.setShowFPS(false);
+            gc.setShowFPS(false);
 
-        grassMap = new TiledMap("res/d6.tmx");
+            grassMap = new TiledMap("res/d6.tmx");
 
-        camera = new Camera(gc, grassMap);
+            camera = new Camera(gc, grassMap);
 
-        player = new Player();
+            player = new Player();
 
-        Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+            Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 
-        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 
-            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
 
-                int tileID = grassMap.getTileId(xAxis, yAxis, 1);
+                    int tileID = grassMap.getTileId(xAxis, yAxis, 1);
 
-                String value = grassMap.getTileProperty(tileID,
-                        "blocked", "false");
+                    String value = grassMap.getTileProperty(tileID,
+                            "blocked", "false");
 
-                if ("true".equals(value)) {
+                    if ("true".equals(value)) {
 
-                    Blocked.blocked[xAxis][yAxis] = true;
+                        Blocked.blocked[xAxis][yAxis] = true;
+
+                    }
 
                 }
 
             }
 
-        }
+            hostiles = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 
-        hostiles = new boolean[grassMap.getWidth()][grassMap.getHeight()];
-
-        if (reset) {
             for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
                 for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
                     int xBlock = (int) xAxis;
@@ -150,6 +150,10 @@ public class LettuceRun extends BasicGameState {
                     camera.cameraY + 45);
             g.drawString("Lettuce: " + (int) (score), camera.cameraX + 10,
                     camera.cameraY + 55);
+            if (godLettuce) {
+                g.drawString("Super Lettuce ", camera.cameraX + 10,
+                        camera.cameraY + 70);
+            }
         }
 
         for (Ninja a : ninjas) {
@@ -176,6 +180,7 @@ public class LettuceRun extends BasicGameState {
                 e.currentanime.draw(e.Bx, e.By);
             }
         }
+
         if (orb1.isIsVisible()) {
             orb1.orbpic.draw(orb1.getX(), orb1.getY());
         }

@@ -3,10 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Lose.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Win.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Menu.java</file>
             <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/LettuceRun.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/LevelWin.java</file>
             <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Blocked.java</file>
             <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Player.java</file>
             <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Orb.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Main.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/Enemy.java</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/nbproject/build-impl.xml</file>
+            <file>file:/home/aguilara42/NetBeansProjects/LettuceRun/src/lettuceRun/LettuceWorld.java</file>
         </group>
     </open-files>
 </project-private>

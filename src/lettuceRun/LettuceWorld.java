@@ -31,7 +31,7 @@ public class LettuceWorld extends BasicGameState {
     public ArrayList<Enemy> enemies = new ArrayList();
     private boolean[][] hostiles;
     private boolean iPressed;
-    private boolean reset = true; 
+    private boolean reset = true;
     private static TiledMap grassMap;
     private static AppGameContainer app;
     private static Camera camera;
@@ -46,83 +46,84 @@ public class LettuceWorld extends BasicGameState {
 
     public void init(GameContainer gc, StateBasedGame sbg)
             throws SlickException {
+        if (reset) {
+            gc.setTargetFrameRate(60);
 
-        gc.setTargetFrameRate(60);
+            gc.setShowFPS(false);
 
-        gc.setShowFPS(false);
+            grassMap = new TiledMap("res/d6.tmx");
 
-        grassMap = new TiledMap("res/d6.tmx");
+            camera = new Camera(gc, grassMap);
 
-        camera = new Camera(gc, grassMap);
+            player = new Player();
 
-        player = new Player();
+            Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 
-        Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 
-        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
 
-            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+                    int tileID = grassMap.getTileId(xAxis, yAxis, 1);
 
-                int tileID = grassMap.getTileId(xAxis, yAxis, 1);
+                    String value = grassMap.getTileProperty(tileID,
+                            "blocked", "false");
 
-                String value = grassMap.getTileProperty(tileID,
-                        "blocked", "false");
+                    if ("true".equals(value)) {
 
-                if ("true".equals(value)) {
+                        Blocked.blocked[xAxis][yAxis] = true;
 
-                    Blocked.blocked[xAxis][yAxis] = true;
+                    }
 
                 }
 
             }
 
-        }
+            hostiles = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 
-        hostiles = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+                    int xBlock = (int) xAxis;
+                    int yBlock = (int) yAxis;
+                    if (!Blocked.blocked[xBlock][yBlock]) {
+                        if (yBlock % 17 == 0 && xBlock % 15 == 0) {
+                            Enemy i = new Enemy(xAxis * SIZE, yAxis * SIZE);
+                            enemies.add(i);
 
-        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-                int xBlock = (int) xAxis;
-                int yBlock = (int) yAxis;
-                if (!Blocked.blocked[xBlock][yBlock]) {
-                    if (yBlock % 17 == 0 && xBlock % 15 == 0) {
-                        Enemy i = new Enemy(xAxis * SIZE, yAxis * SIZE);
-                        enemies.add(i);
-
-                        hostiles[xAxis][yAxis] = true;
+                            hostiles[xAxis][yAxis] = true;
+                        }
                     }
                 }
             }
-        }
 
-        for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-                int xBlock = (int) xAxis;
-                int yBlock = (int) yAxis;
-                if (!Blocked.blocked[xBlock][yBlock]) {
-                    if (yBlock % 7 == 0 && xBlock % 15 == 0) {
-                        Box i = new Box(xAxis * SIZE, yAxis * SIZE);
-                        boxs.add(i);
-                        hostiles[xAxis][yAxis] = true;
+            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+                    int xBlock = (int) xAxis;
+                    int yBlock = (int) yAxis;
+                    if (!Blocked.blocked[xBlock][yBlock]) {
+                        if (yBlock % 7 == 0 && xBlock % 15 == 0) {
+                            Box i = new Box(xAxis * SIZE, yAxis * SIZE);
+                            boxs.add(i);
+                            hostiles[xAxis][yAxis] = true;
+                        }
                     }
                 }
             }
+
+            deathBox = new Box(128, 388);
+            Aldo = new Enemy(100, 100);
+            Aldo1 = new Enemy(100, 3000);
+            Aldo2 = new Enemy(200, 3500);
+            Aldo3 = new Enemy(400, 4000);
+            orb1 = new Orb((int) player.x, (int) player.y);
+            enemies.add(Aldo);
+            enemies.add(Aldo1);
+            enemies.add(Aldo2);
+            enemies.add(Aldo3);
+            boxs.add(deathBox);
+
+            god = new GodLettuce(1000, 5000);
+            lettuce.add(god);
         }
-
-        deathBox = new Box(128, 388);
-        Aldo = new Enemy(100, 100);
-        Aldo1 = new Enemy(100, 3000);
-        Aldo2 = new Enemy(200, 3500);
-        Aldo3 = new Enemy(400, 4000);
-        orb1 = new Orb((int) player.x, (int) player.y);
-        enemies.add(Aldo);
-        enemies.add(Aldo1);
-        enemies.add(Aldo2);
-        enemies.add(Aldo3);
-        boxs.add(deathBox);
-
-        god = new GodLettuce(1000, 5000);
-        lettuce.add(god);
 
     }
 
@@ -148,6 +149,10 @@ public class LettuceWorld extends BasicGameState {
                     camera.cameraY + 45);
             g.drawString("Lettuce: " + (int) (score), camera.cameraX + 10,
                     camera.cameraY + 55);
+            if (godLettuce) {
+                g.drawString("Super Lettuce ", camera.cameraX + 10,
+                        camera.cameraY + 70);
+            }
         }
 
         for (Ninja a : ninjas) {
