@@ -17,26 +17,33 @@ public class LettuceWorld extends BasicGameState {
 
     public Ninja Morse, Giavanna, Weber;
     public Box deathBox;
-    public Enemy Aldo;
-    public Enemy Aldo1;
-    public Enemy Aldo2;
-    public Enemy Aldo3;
+    public TrapLettuce trap;
+    public EnemyTwo Aldo;
+    public EnemyTwo Aldo1;
+    public EnemyTwo Aldo2;
+    public EnemyTwo Aldo3;
     public GodLettuce god;
     static public Player player;
-    public Orb orb1;
+    public Fire fireBall;
+    public OrbPickUp orbObject;
 
+    public ArrayList<TrapLettuce> traps = new ArrayList();
+    public ArrayList<OrbPickUp> orbUp = new ArrayList();
     public ArrayList<GodLettuce> lettuce = new ArrayList();
     public ArrayList<Ninja> ninjas = new ArrayList();
     public ArrayList<Box> boxs = new ArrayList();
-    public ArrayList<Enemy> enemies = new ArrayList();
+    public ArrayList<EnemyTwo> enemies = new ArrayList();
     private boolean[][] hostiles;
+    private boolean hasFire;
     private boolean iPressed;
     private boolean reset = true;
-    private static TiledMap grassMap;
+    private TiledMap worldMap;
     private static AppGameContainer app;
     private static Camera camera;
     public static boolean godLettuce = false;
     public static int score = 0;
+    public static int inv = 45;
+    public static int trapsHit = 0;
     private static final int SIZE = 64;
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 750;
@@ -51,26 +58,26 @@ public class LettuceWorld extends BasicGameState {
 
             gc.setShowFPS(false);
 
-            grassMap = new TiledMap("res/d6.tmx");
+            worldMap = new TiledMap("res/d4.tmx");
 
-            camera = new Camera(gc, grassMap);
+            camera = new Camera(gc, worldMap);
 
             player = new Player();
 
-            Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+            BlockedTwo.blocked = new boolean[worldMap.getWidth()][worldMap.getHeight()];
 
-            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+            for (int xAxis = 0; xAxis < worldMap.getWidth(); xAxis++) {
 
-                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+                for (int yAxis = 0; yAxis < worldMap.getHeight(); yAxis++) {
 
-                    int tileID = grassMap.getTileId(xAxis, yAxis, 1);
+                    int tileID = worldMap.getTileId(xAxis, yAxis, 1);
 
-                    String value = grassMap.getTileProperty(tileID,
+                    String value = worldMap.getTileProperty(tileID,
                             "blocked", "false");
 
                     if ("true".equals(value)) {
 
-                        Blocked.blocked[xAxis][yAxis] = true;
+                        BlockedTwo.blocked[xAxis][yAxis] = true;
 
                     }
 
@@ -78,15 +85,15 @@ public class LettuceWorld extends BasicGameState {
 
             }
 
-            hostiles = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+            hostiles = new boolean[worldMap.getWidth()][worldMap.getHeight()];
 
-            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+            for (int xAxis = 0; xAxis < worldMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < worldMap.getHeight(); yAxis++) {
                     int xBlock = (int) xAxis;
                     int yBlock = (int) yAxis;
-                    if (!Blocked.blocked[xBlock][yBlock]) {
+                    if (!BlockedTwo.blocked[xBlock][yBlock]) {
                         if (yBlock % 17 == 0 && xBlock % 15 == 0) {
-                            Enemy i = new Enemy(xAxis * SIZE, yAxis * SIZE);
+                            EnemyTwo i = new EnemyTwo(xAxis * SIZE, yAxis * SIZE);
                             enemies.add(i);
 
                             hostiles[xAxis][yAxis] = true;
@@ -95,11 +102,11 @@ public class LettuceWorld extends BasicGameState {
                 }
             }
 
-            for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-                for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+            for (int xAxis = 0; xAxis < worldMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < worldMap.getHeight(); yAxis++) {
                     int xBlock = (int) xAxis;
                     int yBlock = (int) yAxis;
-                    if (!Blocked.blocked[xBlock][yBlock]) {
+                    if (!BlockedTwo.blocked[xBlock][yBlock]) {
                         if (yBlock % 7 == 0 && xBlock % 15 == 0) {
                             Box i = new Box(xAxis * SIZE, yAxis * SIZE);
                             boxs.add(i);
@@ -108,19 +115,31 @@ public class LettuceWorld extends BasicGameState {
                     }
                 }
             }
+            for (int xAxis = 0; xAxis < worldMap.getWidth(); xAxis++) {
+                for (int yAxis = 0; yAxis < worldMap.getHeight(); yAxis++) {
+                    int xBlock = (int) xAxis;
+                    int yBlock = (int) yAxis;
+                    if (!BlockedTwo.blocked[xBlock][yBlock]) {
+                        if (yBlock % 13 == 0 && xBlock % 7 == 0) {
+                            TrapLettuce i = new TrapLettuce(xAxis * SIZE, yAxis * SIZE);
+                            traps.add(i);
+                            hostiles[xAxis][yAxis] = true;
+                        }
+                    }
+                }
+            }
 
             deathBox = new Box(128, 388);
-            Aldo = new Enemy(100, 100);
-            Aldo1 = new Enemy(100, 3000);
-            Aldo2 = new Enemy(200, 3500);
-            Aldo3 = new Enemy(400, 4000);
-            orb1 = new Orb((int) player.x, (int) player.y);
-            enemies.add(Aldo);
+            Aldo1 = new EnemyTwo(100, 3000);
+            Aldo2 = new EnemyTwo(200, 3500);
+            Aldo3 = new EnemyTwo(400, 4000);
+            orbObject = new OrbPickUp(128, 388);
+            fireBall = new Fire((int) player.x, (int) player.y);;
             enemies.add(Aldo1);
             enemies.add(Aldo2);
             enemies.add(Aldo3);
             boxs.add(deathBox);
-
+            orbUp.add(orbObject);
             god = new GodLettuce(1000, 5000);
             lettuce.add(god);
         }
@@ -146,12 +165,12 @@ public class LettuceWorld extends BasicGameState {
 
         if (iPressed) {
             g.drawString("--------------", camera.cameraX + 10,
-                    camera.cameraY + 45);
+                    camera.cameraY + inv);
             g.drawString("Lettuce: " + (int) (score), camera.cameraX + 10,
-                    camera.cameraY + 55);
+                    camera.cameraY + inv + 15);
             if (godLettuce) {
                 g.drawString("Super Lettuce ", camera.cameraX + 10,
-                        camera.cameraY + 70);
+                        camera.cameraY + (inv + 15));
             }
         }
 
@@ -168,19 +187,31 @@ public class LettuceWorld extends BasicGameState {
             }
         }
 
+        for (TrapLettuce tp : traps) {
+            if (tp.isvisible) {
+                tp.currentImage.draw(tp.x, tp.y);
+            }
+        }
+
+        for (OrbPickUp op : orbUp) {
+            if (op.isvisible) {
+                op.currentImage.draw(op.x, op.y);
+            }
+        }
+
         for (GodLettuce l : lettuce) {
             if (l.isvisible) {
                 l.currentImage.draw(l.x, l.y);
 
             }
         }
-        for (Enemy e : enemies) {
+        for (EnemyTwo e : enemies) {
             if (e.isvisible) {
                 e.currentanime.draw(e.Bx, e.By);
             }
         }
-        if (orb1.isIsVisible()) {
-            orb1.orbpic.draw(orb1.getX(), orb1.getY());
+        if (fireBall.isIsVisible()) {
+            fireBall.orbpic.draw(fireBall.getX(), fireBall.getY());
         }
 
     }
@@ -194,41 +225,41 @@ public class LettuceWorld extends BasicGameState {
 
         player.setpdelta(fdelta);
 
-        double rightlimit = (grassMap.getWidth() * SIZE) - (SIZE * 0.75);
+        double rightlimit = (worldMap.getWidth() * SIZE) - (SIZE * 0.75);
 
         float projectedright = player.x + fdelta + SIZE;
 
         boolean cangoright = projectedright < rightlimit;
 
-        for (Enemy e : enemies) {
-            if (orb1.HitBox.intersects(e.rect)) {
+        for (EnemyTwo e : enemies) {
+            if (fireBall.HitBox.intersects(e.rect)) {
                 e.isvisible = false;
             }
 
             e.move();
         }
 
-        if (orb1.isIsVisible()) {
-            if (orb1.getTime() > 0) {
+        if (fireBall.isIsVisible()) {
+            if (fireBall.getTime() > 0) {
                 if (player.getDirection() == 0) {
-                    orb1.setX(orb1.getX());
-                    orb1.setY(orb1.getY() - 5);
+                    fireBall.setX(fireBall.getX());
+                    fireBall.setY(fireBall.getY() - 5);
                 } else if (player.getDirection() == 1) {
-                    orb1.setX(orb1.getX() + 5);
-                    orb1.setY(orb1.getY());
+                    fireBall.setX(fireBall.getX() + 5);
+                    fireBall.setY(fireBall.getY());
                 } else if (player.getDirection() == 2) {
-                    orb1.setX(orb1.getX());
-                    orb1.setY(orb1.getY() + 5);
+                    fireBall.setX(fireBall.getX());
+                    fireBall.setY(fireBall.getY() + 5);
                 } else if (player.getDirection() == 3) {
-                    orb1.setX(orb1.getX() - 5);
-                    orb1.setY(orb1.getY());
+                    fireBall.setX(fireBall.getX() - 5);
+                    fireBall.setY(fireBall.getY());
                 }
-                orb1.HitBox.setX(orb1.getX());
-                orb1.HitBox.setY(orb1.getY());
-                orb1.countdown();
+                fireBall.HitBox.setX(fireBall.getX());
+                fireBall.HitBox.setY(fireBall.getY());
+                fireBall.countdown();
 
             } else {
-                orb1.setIsVisible(false);
+                fireBall.setIsVisible(false);
             }
         }
 
@@ -295,33 +326,28 @@ public class LettuceWorld extends BasicGameState {
 
             }
 
-        } else if (input.isKeyDown((Input.KEY_SPACE))) {
-            orb1.setTime(20);
-            orb1.setX((int) player.x);
-            orb1.setY((int) player.y);
-            orb1.HitBox.setX(player.x);
-            orb1.HitBox.setY(player.y);
-            orb1.setIsVisible(true);
-            if (!(isBlocked(orb1.getX(), orb1.getY() - fdelta) || isBlocked((float) (orb1.getX() + SIZE + 1.5), orb1.getY() - fdelta))) {
-
-                //orb1.setOrbpic().update(delta);
-                // player.y -= fdelta;
-            }
-            //orb1.setHitboxX((int)player.x);
-            //orb1.setHitboxY((int)player.y);
-            //orb1.setIsVisible(!orb1.isIsVisible());
-
         } else if (input.isKeyPressed((Input.KEY_I))) {
-            iPressed = true;
+            iPressed = !iPressed;
+        }
 
-            /*  while (iPressed) {
-             if (input.isKeyPressed((Input.KEY_G))) {
-             iPressed = false;
-             }
-            
-             */
-        } else if (input.isKeyPressed((Input.KEY_J))) {
-            iPressed = false;
+        if (hasFire) {
+            if (input.isKeyDown((Input.KEY_SPACE))) {
+                fireBall.setTime(20);
+                fireBall.setX((int) player.x);
+                fireBall.setY((int) player.y);
+                fireBall.HitBox.setX(player.x);
+                fireBall.HitBox.setY(player.y);
+                fireBall.setIsVisible(true);
+                if (!(isBlocked(fireBall.getX(), fireBall.getY() - fdelta) || isBlocked((float) (fireBall.getX() + SIZE + 1.5), fireBall.getY() - fdelta))) {
+
+                    //orb1.setOrbpic().update(delta);
+                    // player.y -= fdelta;
+                }
+                //orb1.setHitboxX((int)player.x);
+                //orb1.setHitboxY((int)player.y);
+                //orb1.setIsVisible(!orb1.isIsVisible());
+
+            }
         }
 
         player.rect.setLocation(player.getplayershitboxX(),
@@ -335,7 +361,7 @@ public class LettuceWorld extends BasicGameState {
             sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
         }
 
-        for (Enemy e : enemies) {
+        for (EnemyTwo e : enemies) {
 
             if (player.rect.intersects(e.rect)) {
                 if (e.isvisible) {
@@ -346,6 +372,29 @@ public class LettuceWorld extends BasicGameState {
 
             }
 
+        }
+
+        for (OrbPickUp op : orbUp) {
+
+            if (player.rect.intersects(op.hitbox)) {
+                if (op.isvisible) {
+                    hasFire = true;
+                    op.isvisible = false;
+                }
+
+            }
+        }
+
+        for (TrapLettuce tp : traps) {
+
+            if (player.rect.intersects(tp.hitbox)) {
+                if (tp.isvisible) {
+                    trapsHit++;
+                    player.health -= 30;
+                    tp.isvisible = false;
+                }
+
+            }
         }
 
         for (Box d : boxs) {
@@ -387,7 +436,7 @@ public class LettuceWorld extends BasicGameState {
 
         int yBlock = (int) ty / SIZE;
 
-        return Blocked.blocked[xBlock][yBlock];
+        return BlockedTwo.blocked[xBlock][yBlock];
     }
 
 }

@@ -145,14 +145,7 @@ public class Win extends BasicGameState {
 
 
             case Input.KEY_1:
-                LettuceRun.godLettuce = false;
-                LettuceRun.player.health  = 100;
-                LettuceRun.player.speed = .4f;
-                LettuceRun.player.x = 96f;
-                LettuceRun.player.y = 228f;
-                LettuceRun.score = 0;
-                
-                
+                ResetGame.fullReset();
                 //item.isvisible = true;
                 //item1.isvisible = true;
                 GodLettuce.isvisible = true;

@@ -32,11 +32,12 @@ public class LettuceRun extends BasicGameState {
     private boolean[][] hostiles;
     private boolean iPressed;
     private boolean reset = true;
-    private static TiledMap grassMap;
+    private TiledMap grassMap;
     private static AppGameContainer app;
     private static Camera camera;
     public static boolean godLettuce = false;
     public static int score = 0;
+    public static int inv = 45;
     private static final int SIZE = 64;
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 750;
@@ -314,16 +315,8 @@ public class LettuceRun extends BasicGameState {
             //orb1.setIsVisible(!orb1.isIsVisible());
 
         } else if (input.isKeyPressed((Input.KEY_I))) {
-            iPressed = true;
+            iPressed = !iPressed;
 
-            /*  while (iPressed) {
-             if (input.isKeyPressed((Input.KEY_G))) {
-             iPressed = false;
-             }
-            
-             */
-        } else if (input.isKeyPressed((Input.KEY_J))) {
-            iPressed = false;
         }
 
         player.rect.setLocation(player.getplayershitboxX(),

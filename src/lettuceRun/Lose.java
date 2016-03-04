@@ -66,13 +66,7 @@ public class Lose extends BasicGameState {
     public void keyReleased(int key, char c) {
         switch (key) {
             case Input.KEY_1:
-                LettuceRun.godLettuce = false;
-                LettuceRun.player.health  = 100;
-                LettuceRun.player.speed = .4f;
-                LettuceRun.player.x = 96f;
-                LettuceRun.player.y = 228f;
-                LettuceRun.score = 0;
-                GodLettuce.isvisible = true;
+                ResetGame.fullReset();
                 //redo potions and reset cordinates of player
                 game.enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
                 break;
